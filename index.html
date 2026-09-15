@@ -137,13 +137,10 @@ header.nav.stuck .brand img{height:38px;}
 /* de video dekt exact het geit-deel van het logo (bovenste 56,22%) */
 /* de video is uitgesneden uit hetzelfde logobestand, dus deze percentages
    leggen hem precies over de geit heen */
-.goat-vid{position:absolute; left:-10.612%; top:-4.969%; width:119.885%; height:61.465%;
+.goat-vid{position:absolute; left:-12.630%; top:-7.143%; width:125.261%; height:114.286%;
   object-fit:fill; opacity:0; pointer-events:none;
   transition:opacity .32s ease;}
 .goat-vid.on{opacity:1;}
-/* de letterbalk ligt in het origineel vóór de geit: als losse laag terug bovenop,
-   zodat de onderrand van de video netjes wegvalt achter "BOCKBIER" */
-.logo-band{position:absolute; left:0; top:56.495%; width:100%; height:auto; pointer-events:none;}
 .logo-anim.ready{cursor:pointer;}
 .hero h1{font-size:clamp(31px,6.4vw,66px); line-height:1.06; text-transform:uppercase; margin:8px 0 12px;
   text-shadow:0 4px 24px rgba(0,0,0,.35);}
@@ -400,7 +397,6 @@ footer{background:var(--ink); color:rgba(245,231,199,.85); padding:clamp(44px,6v
     <div class="logo-anim rv d1" id="logoAnim" title="Klik op de geit">
       <img class="logo-h" src="img/logo-hero.png" alt="Bockbiertocht Naaldwijk 2026" width="560" height="614">
       <video class="goat-vid" id="goatVid" muted playsinline preload="auto" aria-hidden="true" width="1280" height="720"></video>
-      <img class="logo-band" src="img/logo-band.png" alt="" aria-hidden="true" width="560" height="267" loading="lazy">
     </div>
     <h1 class="display rv d1">Bockbiertocht Naaldwijk</h1>
     <div class="hero-sub rv d2">14:00 &ndash; 18:00 uur &middot; centrum Naaldwijk</div>
@@ -544,7 +540,7 @@ footer{background:var(--ink); color:rgba(245,231,199,.85); padding:clamp(44px,6v
         <span><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 21h18M5 21V9l7-5 7 5v12" stroke="#B8460F" stroke-width="1.7" stroke-linejoin="round"/></svg>6 zaken</span>
         <span><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M8 3h8l-1 8a3 3 0 0 1-6 0L8 3Z" stroke="#B8460F" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 14v6M9 20h6" stroke="#B8460F" stroke-width="1.7" stroke-linecap="round"/></svg>eigen glas</span>
       </div>
-      <a href="https://shop.weeztix.com/631a90f8-2482-11ed-aa54-6a57c78572ab" target="_blank" rel="noopener" class="btn btn-primary" style="width:100%;">Bestel je ticket
+      <a href="https://weeztix.shop/f53xre5b" target="_blank" rel="noopener" class="btn btn-primary" style="width:100%;">Bestel je ticket
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
       <p class="tnote">Tickets koop je via Weeztix. De ticketshop opent in een nieuw tabblad. 18+.</p>
@@ -704,7 +700,7 @@ footer{background:var(--ink); color:rgba(245,231,199,.85); padding:clamp(44px,6v
       if(vid.parentNode) vid.parentNode.removeChild(vid);
       fb = document.createElement("img");
       fb.className = "goat-vid"; fb.alt = ""; fb.setAttribute("aria-hidden", "true");
-      box.insertBefore(fb, box.querySelector(".logo-band"));   // onder de letterbalk houden
+      box.appendChild(fb);
       ready();
     }
 
