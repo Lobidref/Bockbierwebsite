@@ -130,7 +130,10 @@ header.nav.stuck .brand img{height:38px;}
 .hero-in{text-align:center; position:relative; width:100%;}
 .logo-anim{position:relative; width:min(230px,54vw); margin:0 auto 6px;
   filter:drop-shadow(0 10px 26px rgba(0,0,0,.45));}
-.logo-anim img.logo-h{width:100%; height:auto;}
+.logo-anim img.logo-h{width:100%; height:auto; transition:opacity .3s ease;}
+/* tijdens het afspelen het stilstaande logo weghalen, anders zie je de geit dubbel
+   zodra hij zijn kop beweegt — de letterbalk blijft als losse laag wel staan */
+.logo-anim.playing img.logo-h{opacity:0;}
 /* de video dekt exact het geit-deel van het logo (bovenste 56,22%) */
 /* de video is uitgesneden uit hetzelfde logobestand, dus deze percentages
    leggen hem precies over de geit heen */
@@ -667,7 +670,20 @@ footer{background:var(--ink); color:rgba(245,231,199,.85); padding:clamp(44px,6v
     var mode = null, busy = false, fb = null;
     var CLIP_MS = 5000;
 
-    function ready(){ box.classList.add("ready"); setTimeout(play, 1500); }
+    var autoplayed = false;
+    function inView(){
+      var r = box.getBoundingClientRect();
+      return r.bottom > 40 && r.top < window.innerHeight * 0.85;
+    }
+    function maybeAutoplay(){
+      if(autoplayed || !box.classList.contains("ready")) return;
+      if(!inView()) return;
+      autoplayed = true;
+      setTimeout(function(){ play(true); }, 700);
+    }
+    function ready(){ box.classList.add("ready"); maybeAutoplay(); }
+    window.addEventListener("scroll", maybeAutoplay, {passive:true});
+    window.addEventListener("resize", maybeAutoplay, {passive:true});
 
     // Kan deze browser de transparantie van de webm ook echt tonen? Safari speelt
     // webm wel af maar zet er soms een zwart vlak achter — dat testen we op een
@@ -692,9 +708,13 @@ footer{background:var(--ink); color:rgba(245,231,199,.85); padding:clamp(44px,6v
       ready();
     }
 
-    function play(){
+    function play(auto){
       if(busy) return;
+      // vlak voor het starten nog eens kijken: tijdens de wachttijd kan de bezoeker
+      // al weggescrold zijn, en dan speelt hij uit zicht af
+      if(auto && !inView()){ autoplayed = false; return; }
       busy = true;
+      box.classList.add("playing");
       if(mode === "video"){
         try { vid.currentTime = 0; } catch(e){}
         vid.classList.add("on");
@@ -705,11 +725,12 @@ footer{background:var(--ink); color:rgba(245,231,199,.85); padding:clamp(44px,6v
         fb.src = "img/geit.webp";
         fb.classList.add("on");
         setTimeout(stop, CLIP_MS);
-      } else { busy = false; }
+      } else { box.classList.remove("playing"); busy = false; }
     }
     function stop(){
       var el = mode === "video" ? vid : fb;
       if(el) el.classList.remove("on");
+      box.classList.remove("playing");
       setTimeout(function(){ busy = false; }, 440);
     }
 
